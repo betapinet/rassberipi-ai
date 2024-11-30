@@ -1,26 +1,14 @@
 import speech_recognition as sr
 import pyttsx3
 import openai
-import pyodbc
 from datetime import datetime
 
 # Initializing pyttsx3
-listening = True
 engine = pyttsx3.init()
 
-# Set your OpenAI API key and customizing the chatGPT role
+# Set your OpenAI API key and customize ChatGPT role
 openai.api_key = "xyz"
 messages = [{"role": "system", "content": "Your name is Rocky and give answers in 2 lines"}]
-
-# Database connection to SQL Server
-conn = pyodbc.connect(
-    'DRIVER={ODBC Driver 17 for SQL Server};'
-    'SERVER=192.168.43.2;'
-    'DATABASE=ChatLogs;'
-    'UID=sa;'
-    'PWD=123456;'
-)
-cursor = conn.cursor()
 
 # Function to get response from OpenAI
 def get_response(user_input):
@@ -29,50 +17,42 @@ def get_response(user_input):
         model="gpt-3.5-turbo",
         messages=messages
     )
-    ChatGPT_reply = response["choices"][0]["message"]["content"]
-    messages.append({"role": "assistant", "content": ChatGPT_reply})
+    assistant_reply = response["choices"][0]["message"]["content"]
+    messages.append({"role": "assistant", "content": assistant_reply})
+    return assistant_reply
 
-    # Store the conversation in the database
-    save_conversation(user_input, ChatGPT_reply)
-
-    return ChatGPT_reply
-
-# Function to save conversation to SQL Server
-def save_conversation(user_input, assistant_response):
-    try:
-        query = """
-        INSERT INTO Conversations (UserInput, AssistantResponse, Timestamp)
-        VALUES (?, ?, ?)
-        """
-        timestamp = datetime.now()
-        cursor.execute(query, user_input, assistant_response, timestamp)
-        conn.commit()
-        print("Conversation saved to database.")
-    except Exception as e:
-        print(f"Error saving conversation: {e}")
-
-# Listening and processing user input
-while listening:
+# Function to listen and process user input
+def listen_and_respond():
+    recognizer = sr.Recognizer()
     with sr.Microphone() as source:
-        recognizer = sr.Recognizer()
-        recognizer.adjust_for_ambient_noise(source)
-        recognizer.dynamic_energy_threshold = 3000
-
+        recognizer.adjust_for_ambient_noise(source, duration=1)
+        print("Listening...")
         try:
-            print("Listening...")
             audio = recognizer.listen(source, timeout=5.0)
-            response = recognizer.recognize_google(audio)
-            print(response)
+            user_input = recognizer.recognize_google(audio)
+            print(f"User: {user_input}")
 
-            if "rocky" in response.lower():
-                response_from_openai = get_response(response)
+            if "rocky" in user_input.lower():
+                assistant_reply = get_response(user_input)
+                print(f"Rocky: {assistant_reply}")
                 engine.setProperty('rate', 120)
                 engine.setProperty('volume', 1.0)
-                engine.say(response_from_openai)
+                engine.say(assistant_reply)
                 engine.runAndWait()
             else:
-                print("Didn't recognize 'Rocky'.")
+                print("Didn't recognize 'Rocky' in the input.")
         except sr.UnknownValueError:
-            print("Didn't recognize anything.")
+            print("Didn't understand the audio.")
+        except sr.RequestError as e:
+            print(f"Speech recognition service error: {e}")
         except Exception as e:
             print(f"Error: {e}")
+
+# Main loop for continuous listening
+if __name__ == "__main__":
+    print("Say 'Rocky' to interact with the assistant. Press Ctrl+C to exit.")
+    try:
+        while True:
+            listen_and_respond()
+    except KeyboardInterrupt:
+        print("\nExiting... Goodbye!")
