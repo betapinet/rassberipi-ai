@@ -21,7 +21,7 @@ git clone https://raw.githubusercontent.com/betapinet/rassberipi-ai/refs/heads/m
 
 ```
 
-##Install Packeages
+## Install Packeages
 
 ```
 
@@ -30,7 +30,14 @@ pip install SpeechRecognition pyaudio
 pip install pyttsx3
 pip install openai==0.28
 
-...
+```
+
+```
+nano chat-gpt.py  # Change API
+
+python3 chat-gpt.py
+
+```
 
 
 
