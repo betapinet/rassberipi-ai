@@ -13,7 +13,7 @@ mkdir chatgpt
 cd chatgpt
 virtualenv -p python3 chatgpt
 source chatgpt/bin/activate
-git clone https://raw.githubusercontent.com/betapinet/rassberipi-ai/refs/heads/main/chat-gpt.py
+wget https://raw.githubusercontent.com/betapinet/rassberipi-ai/refs/heads/main/chat-gpt.py
 
 ```
 
