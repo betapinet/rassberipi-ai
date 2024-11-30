@@ -4,6 +4,7 @@
 sudo apt update && sudo apt dist-upgrade -y
 sudo apt install portaudio19-dev
 sudo apt install python3-pyaudio python3-pip python3-virtualenv espeak flac -y
+sudo apt install alsa-utils
 ```
 ## Create Enviorment
 
