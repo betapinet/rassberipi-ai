@@ -17,6 +17,7 @@ mkdir chatgpt
 cd chatgpt
 virtualenv -p python3 chatgpt
 source chatgpt/mbin/activate
+git clone https://raw.githubusercontent.com/betapinet/rassberipi-ai/refs/heads/main/chat-gpt.py
 
 ```
 
