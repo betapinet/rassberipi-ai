@@ -10,17 +10,19 @@ sudo apt install flac
 
 ```
 ## Create Enviorment
-...
+
+```
 
 mkdir chatgpt
 cd chatgpt
-virtualenv -p python3.11.2 chatgpt
-source chatgpt//bin/activate
+virtualenv -p python3 chatgpt
+source chatgpt/mbin/activate
 
-...
+```
 
 ##Install Packeages
-...
+
+```
 
 pip install speechrecognition
 pip install SpeechRecognition pyaudio
