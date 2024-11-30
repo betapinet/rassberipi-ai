@@ -5,9 +5,7 @@ sudo apt update && sudo apt dist-upgrade -y
 sudo apt install portaudio19-dev
 sudo apt install python3-pyaudio
 sudo apt install python3-pip
-sudo apt install espeak && flac
-
-
+sudo apt install espeak flac -y
 ```
 ## Create Enviorment
 
