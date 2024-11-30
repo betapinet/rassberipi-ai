@@ -12,7 +12,7 @@ sudo apt install python3-pyaudio python3-pip python3-virtualenv espeak flac -y
 mkdir chatgpt
 cd chatgpt
 virtualenv -p python3 chatgpt
-source /bin/activate
+source chatgpt/bin/activate
 git clone https://raw.githubusercontent.com/betapinet/rassberipi-ai/refs/heads/main/chat-gpt.py
 
 ```
